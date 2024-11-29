@@ -1,0 +1,24 @@
+noteload "Image_Master.dat"
+
+noteget tmp,1:split tmp,"=",tmp:MapChipX=int(tmp(1))
+noteget tmp,2:split tmp,"=",tmp:MapChipY=int(tmp(1))
+noteget tmp,3:split tmp,"=",tmp
+mes "マップチップ:x"+str(MapChipX)+" y"+str(MapChipY)+"["+tmp(1)+"]"
+buffer 1,100,100:title "非表示1番、マップチップ"
+picload tmp(1),2:gsel 0
+
+noteget tmp,4:split tmp,"=",tmp:CharaChipX=int(tmp(1))
+noteget tmp,5:split tmp,"=",tmp:CharaChipY=int(tmp(1))
+noteget tmp,6:split tmp,"=",tmp
+mes "キャラチップ:x"+str(CharaChipX)+" y"+str(CharaChipY)+"["+tmp(1)+"]"
+buffer 2,100,100:title "非表示2番、キャラ領域"
+picload tmp(1),2:gsel 0
+
+noteget tmp,7:split tmp,"=",tmp:ItemChipX=int(tmp(1))
+noteget tmp,8:split tmp,"=",tmp:ItemChipY=int(tmp(1))
+noteget tmp,9:split tmp,"=",tmp
+mes "アイテム:x"+str(CharaChipX)+" y"+str(CharaChipY)+"["+tmp(1)+"]"
+buffer 3,100,100:title "非表示3番、アイテム領域"
+picload tmp(1),2:gsel 0
+
+mes "グラフィックのロード完了"

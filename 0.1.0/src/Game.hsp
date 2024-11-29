@@ -1,0 +1,121 @@
+gosub *SetLocal
+LpX=int(LpX)
+LpY=int(LpY)
+Byouga=0
+
+repeat
+redraw 0
+boxf
+
+gosub *WriteChip
+gosub *WriteChara
+gosub *Inputs
+gosub *EVENT_TILE
+
+mes "描画"+str(Byouga)
+mes "You=("+LpX+","+LpY+")"
+redraw 1
+await 32
+loop
+
+*SetLocal
+	sdim MapData
+	notesel SubMap
+	repeat notemax
+		noteget tmp,cnt
+		if instr(tmp,0,"["+LocalMap)=0{
+			setPos=cnt+1
+			repeat
+				noteget tmp,setPos
+				if instr(tmp,0,"[")=0{break}
+				MapData+=tmp+",@,"
+				setPos++
+			loop
+		break
+		}
+	loop
+	return
+
+*WriteChip
+	x=0
+	y=0
+	split MapData,",",MapData
+	repeat (length(MapData)-2)
+		if MapData(cnt)="@"{x=0:y=y+MapChipY:continue}
+		split MapData(cnt),"-",tmp1,tmp2
+		tmp(0)=int(tmp1)
+		tmp(1)=int(tmp2)
+		
+		gsel 0
+		copytox(0)=x
+		copytox(1)=x+MapChipX
+		copytox(2)=x+MapChipX
+		copytox(3)=x
+		copytoy(0)=y
+		copytoy(1)=y
+		copytoy(2)=y+MapChipY
+		copytoy(3)=y+MapChipY
+		
+		copyfromx(0)=tmp(0)*MapChipX
+		copyfromx(1)=(tmp(0)+1)*MapChipX
+		copyfromx(2)=(tmp(0)+1)*MapChipX
+		copyfromx(3)=tmp(0)*MapChipX
+		
+		copyfromy(0)=tmp(1)*MapChipY
+		copyfromy(1)=tmp(1)*MapChipY
+		copyfromy(2)=(tmp(1)+1)*MapChipY
+		copyfromy(3)=(tmp(1)+1)*MapChipY
+		gsquare 1,copytox,copytoy,copyfromx,copyfromy
+		x=x+MapChipX
+	loop
+	Byouga++:pos 0,0
+	return
+
+*WriteChara
+	//自分 0,0
+	x=LpX*MapChipX
+	y=LpY*MapChipY
+
+	cx=0
+	cy=0
+	gsel 0
+	copytox(0)=x
+	copytox(1)=x+MapChipX
+	copytox(2)=x+MapChipX
+	copytox(3)=x
+	
+	copytoy(0)=y
+	copytoy(1)=y
+	copytoy(2)=y+MapChipY
+	copytoy(3)=y+MapChipY
+		
+	copyfromx(0)=cx*CharaChipX
+	copyfromx(1)=(cx+1)*CharaChipX
+	copyfromx(2)=(cx+1)*CharaChipX
+	copyfromx(3)=cx*CharaChipX
+		
+	copyfromy(0)=cy*CharaChipY
+	copyfromy(1)=cy*CharaChipY
+	copyfromy(2)=(cy+1)*CharaChipY
+	copyfromy(3)=(cy+1)*CharaChipY
+	gsquare 2,copytox,copytoy,copyfromx,copyfromy
+	return
+
+*Inputs
+	if cnt\3!=0{return}
+	getkey tmp,37:if tmp=1{LpX--}else{getkey tmp,39:if tmp=1{LpX++}}
+	getkey tmp,38:if tmp=1{LpY--}else{getkey tmp,40:if tmp=1{LpY++}}
+	return
+
+*EVENT_TILE
+	split MapData,"*",MapData
+	split MapData(length(MapData)-3),"*",EVENT_Tiles
+	repeat length(EVENT_Tiles)
+		split EVENT_Tiles,".",tmp//イベントを登録する
+	loop
+	repeat length(tmp)
+		repeat (length(tmp)/3)
+			if LpX=tmp(cnt) and LpY=tmp(cnt+1){dialog "イベント番号"+tmp(cnt+2)+"を読み込みます"}
+		loop
+	loop
+	return
