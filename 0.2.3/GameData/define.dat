@@ -1,0 +1,14 @@
+//Risotto Define File. USE UTF-8. DO NOT USE '='.
+GameTitle=サンプルデータ
+GameWriter=sample
+GameUpdateCheckWebSite=blank
+GameWindowSizeX=640
+GameWindowSizeY=480
+
+[Default]
+CharaName=CharaName
+GlobalMapPlaceX=10
+GlobalMapPlaceY=10
+LocalMapName=Local
+LocalMapPlaceX=10
+LocalMapPlaceY=10
