@@ -1,8 +1,0 @@
-Event(0)="stop"
-noteload "EVENT.dat"
-TargetNum=0
-repeat notemax
-	noteget tmp,cnt
-	if tmp=str(TargetNum+1){TargetNum++:continue}
-	Event(TargetNum)+="*"+tmp
-loop
