@@ -1,0 +1,33 @@
+noteload "define.dat"
+noteget tmp,1:split tmp,"=",tmp:GameTitle=tmp(1)
+noteget tmp,2:split tmp,"=",tmp:GameWriter=tmp(1)
+noteget tmp,3:split tmp,"=",tmp:GameUpdateCheckWebSite=tmp(1)
+noteget tmp,4:split tmp,"=",tmp:WindowX=tmp(1)
+noteget tmp,5:split tmp,"=",tmp:WindowY=tmp(1)
+
+noteget tmp,8:split tmp,"=" ,tmp:CharaName=tmp(1)
+noteget tmp,9:split tmp,"=" ,tmp:GpX=tmp(1)
+noteget tmp,10:split tmp,"=",tmp:GpY=tmp(1)
+noteget tmp,11:split tmp,"=",tmp:LocalMap=tmp(1)
+noteget tmp,12:split tmp,"=",tmp:LpX=tmp(1)
+noteget tmp,13:split tmp,"=",tmp:LpY=tmp(1)
+
+noteget tmp,16:split tmp,"=",tmp:ScoreTotal=int(tmp(1))
+sdim ScoreBankName,ScoreTotal
+sdim ScoreBankAmount,ScoreTotal
+repeat ScoreTotal
+	noteget tmp,17+cnt
+	split tmp," ",tmp
+	ScoreBankName(cnt)=tmp(0)
+	ScoreBankAmount(cnt)=tmp(1)
+loop
+
+noteget tmp,19+ScoreTotal:split tmp,"=",tmp:FlagTotal=int(tmp(1))
+if FlagTotal\8!=0{dialog "フラグ総数は8の倍数である必要があります。\ndefine.datの"+str(20+ScoreTotal)+"行目を修正してください":end}
+if FlagTotal>65536{dialog "フラグ総数は65536以下である必要があります。\ndefine.datの"+str(20+ScoreTotal)+"行目を修正してください":end}
+sdim FlagBank,(FlagTotal/8) //フラグ確保
+/*
+repeat FlagTotal
+	noteget tmp,cnt+22
+	if int(tmp)=1{setflag cnt}//1だった場合フラグを建てておく
+loop*/

@@ -1,0 +1,11 @@
+[Mapchip]
+MapChipX=16
+MapChipY=16
+MapChip=MapChip.bmp
+CharaChipX=32
+CharaChipY=64
+CharaImage=Chara.bmp
+ItemChipX=16
+ItemChipY=16
+ItemImage=Item.bmp
+[EOF]

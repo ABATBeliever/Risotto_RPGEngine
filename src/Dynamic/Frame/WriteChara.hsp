@@ -1,0 +1,12 @@
+*WriteChara
+	//Ž©•ª 0,0
+	x=LpX*MapChipX
+	y=LpY*MapChipY
+
+	cx=0//CharaNum
+	
+	gsel 0
+	gmode 2,x,y,256
+	pos x+MapChipX,y+MapChipY:gcopy 2,cy*CharaChipX,0,CharaChipX,CharaChipY
+	pos 0,0
+	return

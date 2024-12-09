@@ -1,0 +1,9 @@
+*Inputs_Move
+	if ginfo_act!=0{return}
+	if Byouga\3=0{return}
+	getkey tmp,37:if tmp=1 and LpX>0{LpX--}							//©
+	getkey tmp,39:if tmp=1 and (LpX<int(WindowX)/MapChipX-3){LpX++}	//¨
+	getkey tmp,38:if tmp=1 and LpY>0{LpY--}							//ª
+	getkey tmp,40:if tmp=1 and (LpY<int(WindowY)/MapChipY-3){LpY++}	//«
+	getkey tmp,27:if tmp=1 {goto *Exit}
+return

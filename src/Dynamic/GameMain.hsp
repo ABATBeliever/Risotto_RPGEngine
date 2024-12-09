@@ -1,0 +1,58 @@
+gosub *SetLocal
+LpX=int(LpX)
+LpY=int(LpY)
+Byouga=0
+ByougaMode=1
+color 0,0,0:boxf
+objsize 50,25
+//gosub *DebugStat
+
+/*
+描画モード[ByougaMode]
+値 マップ描画 キャラ描画 キャラ移動 イベント メッセージ オプション
+0      x          x          x          x         x         x
+1      o          o          o          o         x         x
+2      o          o          x          x         x         x
+3      o          x          x          x         x         x
+4      o          o          x          x         x         o
+*/
+
+*mainloop
+redraw 0
+boxf
+
+color 0,0,128
+boxf 0,0,int(WindowX),int(MapChipX)	//枠の計算
+boxf 0,0,int(MapChipY),int(WindowY)
+boxf 0,int(WindowY)-int(MapChipY),int(WindowX),int(WindowY)
+boxf int(WindowX)-int(MapChipX),int(MapChipY),int(WindowX),int(WindowY)
+//gosub *Debug
+if ByougaMode!=0{
+gosub *WriteChip	//チップ描画
+if ByougaMode!=3{gosub *WriteChara}	//キャラ描画
+if ByougaMode=1{gosub *Inputs_Move:gosub *EVENT_TILE}	//キャラ移動 と イベントの発動
+}
+
+color 0,255,255
+
+mes OUTTEXT
+mes "\nマップ名:"+LocalMap
+if str(fps_get())!=32.000000{tmp="[調整中]"}else{tmp=""}
+if fps_get()<30{tmp+="[強制待機]":await 30}
+mes "\nFPS:"+str(fps_get())+tmp
+if tmp=""{mes "FPSは安定しています"}else{mes "FPSを調整しています"}
+mes "("+strf("%05d",GpX)+","+strf("%05d",GpY)+") Global"
+mes "("+strf("%05d",LpX)+","+strf("%05d",LpY)+") Local"
+
+color 0,0,0
+redraw 1
+fps_wait
+goto *mainloop
+
+#include "src/Dynamic/Frame/SetLocal.hsp"
+#include "src/Dynamic/Frame/WriteChip.hsp"
+#include "src/Dynamic/Frame/WriteChara.hsp"
+#include "src/Dynamic/Frame/InputsMove.hsp"
+#include "src/Dynamic/Frame/TileEvents.hsp"
+
+#include "src/Dynamic/DebugWnd.hsp"

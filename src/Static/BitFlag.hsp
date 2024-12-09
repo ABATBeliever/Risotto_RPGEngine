@@ -1,0 +1,6 @@
+#deffunc setflag int _id
+    poke FlagBank,_id/8,peek(FlagBank,_id/8)^(1<<_id\8)
+    return
+
+#defcfunc getflag int _id
+    return peek(FlagBank,_id/8)>>_id\8 & 1

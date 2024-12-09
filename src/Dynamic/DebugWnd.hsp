@@ -1,0 +1,33 @@
+*DebugStat
+	bgscr 4,200,ginfo(21),0,0,0
+	sdim out
+	mesbox out,200,ginfo(21)
+	gsel 0
+return
+
+*Debug
+out=AppName+"\n"+Ver+"\n"+buildday
+out+="\n"+ "総描画回数:"+str(strf("%010d",Byouga))
+out+="\n"+ "("+strf("%05d",WindowX)+","+strf("%05d",WindowY)+")Window"
+out+="\n"+ "("+str(strf("%03d",MapChipX))+","+str(strf("%03d",MapChipY))+")MapChip"
+out+="\n"+ "("+str(strf("%03d",CharaChipX))+","+str(strf("%03d",CharaChipY))+")CharaChip"
+out+="\n"+ "("+str(strf("%03d",ItemChipX))+","+str(strf("%03d",ItemChipY))+")ItemChip"
+out+="\n"+ "("+strf("%05d",GpX)+","+strf("%05d",GpY)+") Global"
+out+="\n"+ "("+strf("%05d",LpX)+","+strf("%05d",LpY)+") Local"
+out+="\n\n"+ "FPS:"+str(fps_get())
+out+="\n"+ "描画モード"+str(ByougaMode)
+out+="\n"+ "マップ名:"+LocalMap
+out+="\n"+ "総イベント数"+str(length(Event))
+out+="\n\n"+ "アイテム総数:"+str(ScoreTotal)
+repeat ScoreTotal
+	out+="\n"+ "*"+strf("%02d",str(cnt))+" "+str(strf("%05d",ScoreBankAmount(cnt)))+" Name:["+ScoreBankName(cnt)+"]"
+loop
+out+="\n\nフラグ 総数:"+str(FlagTotal*8)+"個 "+str(FlagTotal)+"Byte.\nTrueになっているフラグ:"
+tmp=0
+repeat FlagTotal*8
+	if getflag(cnt)=1{out+="\n*"+strf("%05d",str(cnt)):tmp++}
+loop
+out+="\nTrue:"+str(tmp)+" False:"+str(FlagTotal*8-tmp)
+
+gsel 4:objprm 0,out:gsel 0
+return

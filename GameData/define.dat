@@ -1,0 +1,22 @@
+//Risotto Define File. USE UTF-8. DO NOT USE '='.
+GameTitle=サラワ クエスト
+GameWriter=ABATBeliever
+GameUpdateCheckWebSite=blank
+GameWindowSizeX=640
+GameWindowSizeY=480
+
+[Default]
+CharaName=ジェームズ
+GlobalMapPlaceX=10
+GlobalMapPlaceY=10
+LocalMapName=ベナレス
+LocalMapPlaceX=10
+LocalMapPlaceY=10
+
+[Score]
+ScoreTotal=2
+お金 64
+HP 64
+
+[Flag]
+FlagTotal=32

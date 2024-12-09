@@ -1,0 +1,22 @@
+*WriteChip
+	x=MapChipX
+	y=MapChipY
+	split MapData,",",MapData
+	repeat (length(MapData)-2)
+		if MapData(cnt)="@"{x=MapChipX:y=y+MapChipY:continue}
+		split MapData(cnt),"-",tmp1,tmp2
+		tmp(0)=int(tmp1)
+		tmp(1)=int(tmp2)
+		
+		gsel 0
+		copytox(0)=x:copytox(1)=x+MapChipX:copytox(2)=x+MapChipX:copytox(3)=x
+		copytoy(0)=y:copytoy(1)=y:copytoy(2)=y+MapChipY:copytoy(3)=y+MapChipY
+		copyfromx(0)=tmp(0)*MapChipX:copyfromx(1)=(tmp(0)+1)*MapChipX
+		copyfromx(2)=(tmp(0)+1)*MapChipX:copyfromx(3)=tmp(0)*MapChipX
+		copyfromy(0)=tmp(1)*MapChipY:copyfromy(1)=tmp(1)*MapChipY
+		copyfromy(2)=(tmp(1)+1)*MapChipY:copyfromy(3)=(tmp(1)+1)*MapChipY
+		gsquare 1,copytox,copytoy,copyfromx,copyfromy
+		x=x+MapChipX
+	loop
+	Byouga++:pos 0,0
+	return

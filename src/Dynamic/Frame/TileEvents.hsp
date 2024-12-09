@@ -1,0 +1,74 @@
+*EVENT_TILE
+	split MapData,"*",MapData
+	split MapData(length(MapData)-3),".",EVENT_Tiles
+	repeat (length(EVENT_Tiles)/3)
+		if LpX=EVENT_Tiles(cnt*3) and LpY=EVENT_Tiles(cnt*3+1){tmp=EVENT_Tiles(cnt*3+2):gosub *EVENT_DO}
+	loop
+return
+
+*EVENT_DO
+	sdim tmp2
+	sdim tmp3
+	split EVENT(int(tmp)),"*",tmp2
+	repeat length(tmp2)
+		split tmp2(cnt)," ",tmp3
+		switch tmp3(0)
+			case "" : swbreak
+			case "if" 
+				if tmp3(1)="flag"{
+					if int(tmp3(2))>int(FlagTotal*8){dialog "["+tmp3(2)+"]は存在しないFlagです 最大:"+str(FlagTotal*8):end}
+					if getflag(int(tmp3(2)))=1 and tmp3(3)="true" {
+						if tmp3(4)="return" : sdim tmp2
+						}
+					if getflag(int(tmp3(2)))=0 and tmp3(3)="false" {
+						if tmp3(4)="return" : sdim tmp2
+						}
+				}
+				swbreak
+			case "set"
+				if int(tmp3(1))>int(FlagTotal*8){dialog "["+tmp3(1)+"]は存在しないFlagです 最大:"+str(FlagTotal*8):end}
+				if getflag(int(tmp3(1)))=1 and tmp3(2)="false" : setflag int(tmp3(1)) //True(1)->False(0)
+				if getflag(int(tmp3(1)))=0 and tmp3(2)="true" : setflag int(tmp3(1))  //False(0)->True(1)
+				swbreak
+			case "mes" : WriteMessage tmp3(1) : swbreak
+			case "get" : gosub *getItem : swbreak
+			case "move" : dialog "マップ移動 to "+tmp3(1) : swbreak
+			case "call" : tmp=int(tmp3(1)) : gosub *EVENT_DO : sdim tmp2 : swbreak
+			default : dialog "イベントスクリプトが破損しています！"+tmp2(cnt) : swbreak
+		swend
+	loop
+return
+
+#deffunc WriteMessage str p1
+	tmp=p1
+	color 000,128,128:boxf int(WindowX)/5,int(WindowY)*3/5,int(WindowX)*4/5,int(WindowY)*6/7
+	color 000,000,000:boxf int(WindowX)/5+5,int(WindowY)*3/5+5,int(WindowX)*4/5-5,int(WindowY)*6/7-5
+	color 000,255,255:pos int(WindowX)/2-10,int(WindowY)*6/7-20:mes "▽"
+	strrep tmp,"<user>",sysinfo(1)
+	split tmp,"<br>",tmp
+	redraw 1
+	repeat length(tmp)
+		pos int(WindowX)/5+6,int(WindowY)*3/5+6+cnt*20
+		mes tmp(cnt)
+		await 120
+	loop
+	repeat
+		await 4
+		if ginfo_act!=0{continue}
+		stick tmp,0,0
+		if tmp = 16:pos 0,0:break
+		if cnt=300{pos int(WindowX)/2+10,int(WindowY)*6/7-20:mes "<スペースを押して進む>"}
+	loop
+return
+
+*getItem
+repeat ScoreTotal
+	if ScoreBankName(cnt)=tmp3(1){
+		if tmp3(2)="add" or tmp3(2)="+" {ScoreBankAmount(cnt)=str(int(ScoreBankAmount(cnt))+int(tmp3(3))):break}
+		if tmp3(2)="sub" or tmp3(2)="-" {ScoreBankAmount(cnt)=str(int(ScoreBankAmount(cnt))-int(tmp3(3))):break}
+		if tmp3(2)="mul" {ScoreBankAmount(cnt)=str(int(ScoreBankAmount(cnt))*int(tmp3(3))):break}
+		if tmp3(2)="div" {ScoreBankAmount(cnt)=str(int(ScoreBankAmount(cnt))/int(tmp3(3))):break}
+		}
+	if cnt=ScoreTotal-1{dialog "そんなアイテムない"}
+loop
+return

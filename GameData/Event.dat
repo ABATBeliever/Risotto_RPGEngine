@@ -1,0 +1,27 @@
+1
+if flag 101 true return
+mes こんにちは、<user>さん。<br>げんき?<br>僕はげんき！<br>（＾ω＾≡＾ω＾）おっおっおっ！
+mes イベントフラグ101を立てたので、<br>もうこのイベントは起こりません。
+mes イベントはマップチップで予約されており、<br>毎フレーム呼び出されます。<br>フラグを用いて棄却することで、イベントの発動条件を<br>制御します。
+set 101 true
+
+2
+if flag 102 true return
+set 102 true
+mes 「お金」スコアを2加えます
+get お金 + 2
+mes イベント5番を呼び出します。<br>5番はマップチップで予約されておらず、<br>「call」のみで発動します。
+call 5
+
+3
+if flag 103 true return
+mes おめでとう。ヘレンへのカギを見つけた！
+mes 4番フラグは真である必要があり、今有効化されました。<br>詳細はEvent.dat参照。
+set 103 true
+
+4
+if flag 103 false return
+move [ヘレン]
+
+5
+mes イベント5番

@@ -1,0 +1,17 @@
+*SetLocal
+	sdim MapData
+	notesel SubMap
+	repeat notemax
+		noteget tmp,cnt
+		if instr(tmp,0,"["+LocalMap)=0{
+			setPos=cnt+1
+			repeat
+				noteget tmp,setPos
+				if instr(tmp,0,"[")=0{break}
+				MapData+=tmp+",@,"
+				setPos++
+			loop
+		break
+		}
+	loop
+	return
